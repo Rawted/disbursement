@@ -1,7 +1,13 @@
 // src/components/MainPage.tsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import {
+  PDFDocument,
+  rgb,
+  StandardFonts,
+  degrees,
+  PDFImage,
+} from 'pdf-lib';
 import './MainPage.css';
 
 interface TextField {
@@ -33,13 +39,15 @@ const MainPage: React.FC = () => {
   };
 
   const handleReceiptUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    if (e.target.files && e.target.files[0]) {
       setReceiptFile(e.target.files[0]);
     }
   };
 
-  const handleBankStatementUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+  const handleBankStatementUpload = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (e.target.files && e.target.files[0]) {
       setBankStatementFile(e.target.files[0]);
     }
   };
@@ -68,12 +76,102 @@ const MainPage: React.FC = () => {
       });
     });
 
+    // Embed receipt image/PDF if uploaded
+    if (receiptFile) {
+      const receiptBytes = await receiptFile.arrayBuffer();
+      await embedFileIntoPdf(pdfDoc, firstPage, receiptBytes, {
+        x: 50,
+        y: 400,
+        width: 200,
+        height: 150,
+      });
+    }
+
+    // Embed bank statement image/PDF if uploaded
+    if (bankStatementFile) {
+      const bankStatementBytes = await bankStatementFile.arrayBuffer();
+      await embedFileIntoPdf(pdfDoc, firstPage, bankStatementBytes, {
+        x: 300,
+        y: 400,
+        width: 200,
+        height: 150,
+      });
+    }
+
     // Serialize the PDFDocument to bytes (a Uint8Array)
     const pdfBytes = await pdfDoc.save();
 
     // Convert to a base64 data URL to display in the browser
     const pdfDataUri = await pdfDoc.saveAsBase64({ dataUri: true });
     setPdfDataUrl(pdfDataUri);
+
+    // Trigger download of the PDF
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'generated.pdf';
+    link.click();
+  };
+
+  // Function to embed an image or PDF into the PDF document
+  const embedFileIntoPdf = async (
+    pdfDoc: PDFDocument,
+    page: any,
+    fileBytes: ArrayBuffer,
+    position: { x: number; y: number; width: number; height: number }
+  ) => {
+    const fileType = getFileType(fileBytes);
+    if (fileType === 'pdf') {
+      // Embed PDF as pages
+      const embeddedPdf = await PDFDocument.load(fileBytes);
+      const [embeddedPage] = await pdfDoc.copyPages(embeddedPdf, [0]);
+      embeddedPage.scale(position.width / embeddedPage.getWidth());
+      pdfDoc.addPage(embeddedPage);
+    } else if (fileType === 'image') {
+      // Embed image
+      let image;
+      if (isPng(fileBytes)) {
+        image = await pdfDoc.embedPng(fileBytes);
+      } else {
+        image = await pdfDoc.embedJpg(fileBytes);
+      }
+      page.drawImage(image, {
+        x: position.x,
+        y: position.y,
+        width: position.width,
+        height: position.height,
+      });
+    } else {
+      console.error('Unsupported file type');
+    }
+  };
+
+  // Helper functions to determine file types
+  const getFileType = (fileBytes: ArrayBuffer): string => {
+    const arr = new Uint8Array(fileBytes).subarray(0, 4);
+    let header = '';
+    for (let i = 0; i < arr.length; i++) {
+      header += arr[i].toString(16);
+    }
+    switch (header) {
+      case '89504e47':
+        return 'image';
+      case 'ffd8ffe0':
+      case 'ffd8ffe1':
+      case 'ffd8ffe2':
+        return 'image';
+      case '25504446':
+        return 'pdf';
+      default:
+        return 'unknown';
+    }
+  };
+
+  const isPng = (fileBytes: ArrayBuffer): boolean => {
+    const arr = new Uint8Array(fileBytes).subarray(0, 4);
+    const header = arr.reduce((acc, curr) => acc + curr.toString(16), '');
+    return header === '89504e47';
   };
 
   return (
