@@ -1,0 +1,52 @@
+/* src/components/MainPage.css */
+.container {
+  text-align: center;
+  background-color: #e0f7fa;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.form-container {
+  display: inline-block;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.input-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.text-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.generate-button {
+  padding: 10px 20px;
+  background-color: #29b6f6;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.generate-button:hover {
+  background-color: #0288d1;
+}
+
+.pdf-preview {
+  margin-top: 20px;
+  border: none;
+}
