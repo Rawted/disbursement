@@ -49,7 +49,7 @@ const MainPage: React.FC = () => {
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
     const pages = pdfDoc.getPages();
     const firstPage = pages[0];
-    const { width, height } = firstPage.getSize();
+    const { height } = firstPage.getSize(); // Removed 'width' as it's unused
 
     // **Embed a font**
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
@@ -71,19 +71,19 @@ const MainPage: React.FC = () => {
       fieldCoordinates.push(
         { fieldName: `Item${i}`, rectangle: getRectangleForField(`Item${i}`) },
         { fieldName: `Amount${i}`, rectangle: getRectangleForField(`Amount${i}`) },
-        { fieldName: `Category${i}`, rectangle: getRectangleForField(`Category${i}`) },
+        { fieldName: `Category${i}`, rectangle: getRectangleForField(`Category${i}`) }
       );
     }
 
     // **Map field values**
     const fieldValues: { [key: string]: string } = {
-      'Date': date,
-      'Name': name,
-      'Email': email,
-      'PhoneNumber': phoneNumber,
-      'StudentNumber': studentNumber,
-      'AccountCode': accountCode,
-      'Total': total,
+      Date: date,
+      Name: name,
+      Email: email,
+      PhoneNumber: phoneNumber,
+      StudentNumber: studentNumber,
+      AccountCode: accountCode,
+      Total: total,
     };
 
     // **Add item values**
@@ -129,46 +129,48 @@ const MainPage: React.FC = () => {
   };
 
   // **Function to get rectangle coordinates for a field**
-  const getRectangleForField = (fieldName: string): [number, number, number, number] => {
+  const getRectangleForField = (
+    fieldName: string
+  ): [number, number, number, number] => {
     const rectangles: { [key: string]: [number, number, number, number] } = {
       // **Item fields**
-      'Item1': [136.11, 162.78, 196.07, 23.80],
-      'Item2': [136.11, 193.24, 196.07, 23.80],
+      'Item1': [136.11, 162.78, 196.07, 23.8],
+      'Item2': [136.11, 193.24, 196.07, 23.8],
       'Item3': [135.87, 223.54, 196.59, 24.04],
-      'Item4': [136.11, 254.16, 197.02, 23.80],
+      'Item4': [136.11, 254.16, 197.02, 23.8],
       'Item5': [136.11, 282.72, 197.02, 24.75],
-      'Item6': [136.11, 313.18, 197.97, 23.80],
+      'Item6': [136.11, 313.18, 197.97, 23.8],
       'Item7': [136.11, 342.69, 198.92, 24.75],
       'Item8': [136.11, 374.11, 197.97, 22.85],
-      'Item9': [136.11, 402.66, 198.92, 23.80],
-      'Item10': [137.06, 432.17, 197.97, 25.70],
-      'Item11': [136.11, 462.63, 197.02, 23.80],
+      'Item9': [136.11, 402.66, 198.92, 23.8],
+      'Item10': [137.06, 432.17, 197.97, 25.7],
+      'Item11': [136.11, 462.63, 197.02, 23.8],
 
       // **Amount fields**
-      'Amount1': [434.97, 163.73, 100.89, 23.80],
+      'Amount1': [434.97, 163.73, 100.89, 23.8],
       'Amount2': [433.06, 194.19, 103.74, 22.85],
       'Amount3': [432.11, 225.65, 105.65, 22.85],
-      'Amount4': [434.02, 253.21, 101.84, 23.80],
-      'Amount5': [434.02, 282.72, 102.79, 23.80],
-      'Amount6': [432.11, 313.18, 104.70, 23.80],
-      'Amount7': [434.02, 343.64, 100.89, 23.80],
-      'Amount8': [433.06, 373.15, 101.84, 23.80],
+      'Amount4': [434.02, 253.21, 101.84, 23.8],
+      'Amount5': [434.02, 282.72, 102.79, 23.8],
+      'Amount6': [432.11, 313.18, 104.7, 23.8],
+      'Amount7': [434.02, 343.64, 100.89, 23.8],
+      'Amount8': [433.06, 373.15, 101.84, 23.8],
       'Amount9': [433.06, 402.66, 103.74, 22.85],
       'Amount10': [433.06, 432.17, 102.79, 24.75],
-      'Amount11': [433.06, 462.63, 103.74, 23.80],
+      'Amount11': [433.06, 462.63, 103.74, 23.8],
 
       // **Category fields**
-      'Category1': [37.26, 162.77, 80.47, 25.80],
+      'Category1': [37.26, 162.77, 80.47, 25.8],
       'Category2': [37.26, 193.53, 81.47, 24.81],
       'Category3': [37.26, 223.31, 78.49, 23.82],
       'Category4': [36.26, 252.09, 80.47, 24.81],
       'Category5': [36.26, 282.86, 80.47, 24.81],
       'Category6': [35.27, 313.62, 80.47, 24.81],
-      'Category7': [36.26, 342.41, 79.48, 25.80],
-      'Category8': [36.26, 372.18, 78.49, 25.80],
-      'Category9': [35.27, 401.95, 79.48, 25.80],
-      'Category10': [35.27, 431.73, 77.49, 25.80],
-      'Category11': [35.27, 461.50, 78.49, 25.80],
+      'Category7': [36.26, 342.41, 79.48, 25.8],
+      'Category8': [36.26, 372.18, 78.49, 25.8],
+      'Category9': [35.27, 401.95, 79.48, 25.8],
+      'Category10': [35.27, 431.73, 77.49, 25.8],
+      'Category11': [35.27, 461.5, 78.49, 25.8],
     };
 
     return rectangles[fieldName];
