@@ -11,7 +11,8 @@
   background-color: #ffffff;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
 }
 
 .input-group {
@@ -22,28 +23,33 @@
 .input-group label {
   display: block;
   margin-bottom: 5px;
-  font-weight: bold;
 }
 
 .text-input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  box-sizing: border-box;
 }
 
-.generate-button {
+.generate-button,
+.add-button {
   padding: 10px 20px;
   background-color: #29b6f6;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  margin-top: 10px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  border-radius: 5px;
 }
 
-.generate-button:hover {
+.generate-button:hover,
+.add-button:hover {
   background-color: #0288d1;
+}
+
+.item-group {
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
 }
 
 .pdf-preview {
