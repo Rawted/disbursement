@@ -5,8 +5,6 @@ import {
   PDFDocument,
   rgb,
   StandardFonts,
-  degrees,
-  PDFImage,
 } from 'pdf-lib';
 import './MainPage.css';
 
@@ -123,11 +121,22 @@ const MainPage: React.FC = () => {
   ) => {
     const fileType = getFileType(fileBytes);
     if (fileType === 'pdf') {
-      // Embed PDF as pages
+      // Embed PDF as an image
       const embeddedPdf = await PDFDocument.load(fileBytes);
-      const [embeddedPage] = await pdfDoc.copyPages(embeddedPdf, [0]);
-      embeddedPage.scale(position.width / embeddedPage.getWidth());
-      pdfDoc.addPage(embeddedPage);
+      const embeddedPages = await pdfDoc.copyPages(embeddedPdf, [0]);
+      const embeddedPage = embeddedPages[0];
+      const embeddedPageWidth = embeddedPage.getWidth();
+      const embeddedPageHeight = embeddedPage.getHeight();
+      const scale = Math.min(
+        position.width / embeddedPageWidth,
+        position.height / embeddedPageHeight
+      );
+      page.drawPage(embeddedPage, {
+        x: position.x,
+        y: position.y,
+        xScale: scale,
+        yScale: scale,
+      });
     } else if (fileType === 'image') {
       // Embed image
       let image;
