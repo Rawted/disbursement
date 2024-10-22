@@ -148,7 +148,8 @@ const MainPage: React.FC = () => {
       // **Adjust font size to fit width and height**
       while (
         (lines.length * fontSize > maxHeight ||
-          font.widthOfTextAtSize(value, fontSize) > maxWidth) &&
+          Math.max(...lines.map((line) => font.widthOfTextAtSize(line, fontSize))) >
+            maxWidth) &&
         fontSize > minFontSize
       ) {
         fontSize -= 0.5; // Decrease font size
@@ -169,33 +170,27 @@ const MainPage: React.FC = () => {
         'Total',
       ].includes(field.fieldName);
 
-      let textOptions: any = {
-        x: x + 1, // Add padding
-        y: y + rect[3] - fontSize, // Start at the top of the rectangle
-        size: fontSize,
-        font: font,
-        color: rgb(0, 0, 0),
-        maxWidth: maxWidth,
-      };
-
-      if (isCategoryOrAmount) {
-        // **Center alignment for Category and Amount**
-        textOptions.align = 'center';
-        textOptions.x = x + rect[2] / 2;
-      } else if (isStaticField) {
-        // **Right alignment for static text inputs**
-        textOptions.align = 'right';
-        textOptions.x = x + rect[2] - 1; // Right padding
-      } else {
-        // **Left alignment for other fields**
-        textOptions.align = 'left';
-      }
-
       // **Draw each line**
       lines.forEach((line, index) => {
+        let textWidth = font.widthOfTextAtSize(line, fontSize);
+        let textX = x + 1; // Default left alignment with padding
+
+        if (isCategoryOrAmount) {
+          // **Center alignment**
+          textX = x + (rect[2] - textWidth) / 2;
+        } else if (isStaticField) {
+          // **Right alignment**
+          textX = x + rect[2] - textWidth - 1; // Right edge minus text width and padding
+        }
+        const textY = y + rect[3] - fontSize - index * fontSize; // Start from top
+
         page.drawText(line, {
-          ...textOptions,
-          y: textOptions.y - index * fontSize,
+          x: textX,
+          y: textY,
+          size: fontSize,
+          font: font,
+          color: rgb(0, 0, 0),
+          maxWidth: maxWidth,
         });
       });
     }
