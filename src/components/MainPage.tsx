@@ -428,7 +428,7 @@ const MainPage: React.FC = () => {
   return (
     <Container>
       <animated.img style={logoProps} src="/cus.png" alt="Logo" className="logo" />
-      <h1>Disbursement Form Generator</h1>
+      <h1>Document Generator</h1>
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -591,12 +591,13 @@ const MainPage: React.FC = () => {
             <FiPlus /> Add Another Item
           </motion.button>
         )}
+
         {/* **Receipts Upload** */}
         <div className="input-group">
           <label>Upload Receipts</label>
           <div className="file-upload">
             <label htmlFor="receipt-upload" className="upload-label">
-              <FiUpload /> Choose Files
+              <FiUpload color="#fff" /> Choose Files
             </label>
             <input
               id="receipt-upload"
@@ -606,9 +607,15 @@ const MainPage: React.FC = () => {
               multiple
             />
           </div>
-          <div className="file-list">
+          <div className={`file-list ${receiptFiles.length > 0 ? 'has-files' : ''}`}>
             {receiptFiles.map((file, index) => (
-              <div key={index} className="file-item">
+              <motion.div
+                key={index}
+                className="file-item"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+              >
                 <span>{file.name}</span>
                 <button
                   onClick={() => removeReceiptFile(index)}
@@ -616,16 +623,17 @@ const MainPage: React.FC = () => {
                 >
                   Remove
                 </button>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
+
         {/* **Bank Statements Upload** */}
         <div className="input-group">
           <label>Upload Bank Statements</label>
           <div className="file-upload">
             <label htmlFor="bank-upload" className="upload-label">
-              <FiUpload /> Choose Files
+              <FiUpload color="#fff" /> Choose Files
             </label>
             <input
               id="bank-upload"
@@ -635,9 +643,15 @@ const MainPage: React.FC = () => {
               multiple
             />
           </div>
-          <div className="file-list">
+          <div className={`file-list ${bankStatementFiles.length > 0 ? 'has-files' : ''}`}>
             {bankStatementFiles.map((file, index) => (
-              <div key={index} className="file-item">
+              <motion.div
+                key={index}
+                className="file-item"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+              >
                 <span>{file.name}</span>
                 <button
                   onClick={() => removeBankStatementFile(index)}
@@ -645,10 +659,11 @@ const MainPage: React.FC = () => {
                 >
                   Remove
                 </button>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
+
         <motion.button
           onClick={generatePdf}
           className="generate-button"

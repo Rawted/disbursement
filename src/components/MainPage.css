@@ -53,14 +53,12 @@ h3 {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 15px; /* Added margin-bottom for spacing */
 }
 
-.input-group > label:not(.upload-label),
-.input-group > input,
-.input-group > select {
-  color: #333;
+.input-group label {
   font-weight: bold;
+  color: #333;
 }
 
 .input-group .file-upload {
@@ -72,16 +70,18 @@ h3 {
   display: none;
 }
 
+/* Upload Label */
 .upload-label {
   display: inline-flex;
   align-items: center;
   padding: 10px 20px;
   background: #007BFF;
-  color: #fff;
+  color: #fff; /* Text color set to white */
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
   transition: background-color 0.2s;
+  gap: 5px; /* Add gap between icon and text */
 }
 
 .upload-label:hover {
@@ -100,25 +100,10 @@ h3 {
 
 .text-input:focus {
   border-color: #007BFF;
-  color: #fff;
 }
 
 /* Buttons */
-.add-button {
-  margin-bottom: 15px;
-  padding: 10px 20px;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  background: #28a745;
-  color: #fff;
-  transition: background-color 0.2s;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
+.add-button,
 .remove-button,
 .generate-button,
 .remove-file-button {
@@ -157,40 +142,58 @@ h3 {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  padding: 15px; /* Match padding with .item-group */
-  border: 1px solid #e9ecef; /* Match border with .item-group */
-  border-radius: 5px; /* Match border-radius with .item-group */
-  background: #f8f9fa; /* Same background color as .item-group */
-  position: relative; /* For the vignette effect */
-  /* Vignette effect */
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0, 0, 0, 0.05),
-    rgba(0, 0, 0, 0) 70%
-  ), #f8f9fa;
+  /* No border or background by default */
 }
 
+.file-list.has-files {
+  padding: 15px;
+  border: 1px solid #e9ecef;
+  border-radius: 5px;
+  background: radial-gradient(
+      ellipse at center,
+      rgba(0, 0, 0, 0.05),
+      rgba(0, 0, 0, 0) 70%
+    ),
+    #f8f9fa;
+  position: relative;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Animation Keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* File Item */
 .file-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* Remove individual background and border to let .file-list styling take effect */
   background: transparent;
   padding: 0;
   border: none;
+  /* Animation is handled by Framer Motion */
 }
 
 .file-item span {
-  font-weight: bold;
-  color: #ccc;
+  font-weight: normal;
+  color: #000; /* Set text color to black */
 }
 
+/* Remove File Button */
 .remove-file-button {
   padding: 5px 10px;
   font-size: 0.9rem;
   border-radius: 5px;
   background: #dc3545;
-  color: #fff; /* Ensure the button text is white */
+  color: #fff;
   border: none;
 }
 
@@ -238,12 +241,6 @@ h3 {
   border-radius: 5px;
   background: #f8f9fa;
   margin-bottom: 20px;
-}
-
-.remove-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
 }
 
 input[type="file"] {
