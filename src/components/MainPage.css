@@ -7,11 +7,20 @@
   padding: 20px;
 }
 
+.logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 100px;
+}
+
 h1 {
   text-align: center;
   font-size: 2.5rem;
   font-weight: bold;
-  color: #333;
+  color: #fff;
+  margin-bottom: 40px;
+  animation: fadeIn 1s ease-in-out;
 }
 
 h3 {
@@ -21,11 +30,22 @@ h3 {
   color: #333;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* Form Container */
 .form-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 10px;
+  animation: slideIn 0.5s ease-in-out;
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 /* Input Groups */
@@ -38,6 +58,31 @@ h3 {
 .input-group label {
   font-weight: bold;
   color: #333;
+}
+
+.input-group .file-upload {
+  position: relative;
+  display: inline-block;
+}
+
+.input-group .file-upload input[type="file"] {
+  display: none;
+}
+
+.upload-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  background: #007BFF;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.upload-label:hover {
+  background: #0056b3;
 }
 
 /* Text Inputs */
@@ -65,16 +110,27 @@ h3 {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background: #007BFF;
+  background: #28a745;
   color: #fff;
   transition: background-color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .add-button:hover,
+.generate-button:hover {
+  background: #218838;
+}
+
+.remove-button,
+.remove-file-button {
+  background: #dc3545;
+}
+
 .remove-button:hover,
-.generate-button:hover,
 .remove-file-button:hover {
-  background: #0056b3;
+  background: #c82333;
 }
 
 /* File List */
@@ -123,7 +179,8 @@ h3 {
   .add-button,
   .remove-button,
   .generate-button,
-  .remove-file-button {
+  .remove-file-button,
+  .upload-label {
     font-size: 0.9rem;
     padding: 8px 15px;
   }
@@ -135,6 +192,10 @@ h3 {
   h3 {
     font-size: 1.2rem;
   }
+
+  .logo {
+    width: 80px;
+  }
 }
 
 /* Additional Styles */
@@ -144,35 +205,25 @@ h3 {
   border: 1px solid #e9ecef;
   border-radius: 5px;
   background: #f8f9fa;
+  margin-bottom: 20px;
 }
 
 .remove-button {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: #dc3545;
-}
-
-.remove-button:hover {
-  background: #c82333;
 }
 
 input[type="file"] {
   display: block;
 }
 
-.input-group label[for="file-upload"] {
-  display: inline-block;
-  padding: 10px 20px;
-  font-size: 1rem;
-  font-weight: bold;
-  border-radius: 5px;
-  background: #007BFF;
-  color: #fff;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.input-group label[for="file-upload"]:hover {
-  background: #0056b3;
+select.text-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D'14'%20height%3D'10'%20xmlns%3D'http://www.w3.org/2000/svg'%3E%3Cpath%20d%3D'M7%2010L0%200h14L7%2010z'%20fill%3D'%23333'%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px;
 }

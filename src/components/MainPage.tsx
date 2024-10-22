@@ -2,6 +2,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import styled from 'styled-components';
+import { FiPlus, FiMinus, FiUpload } from 'react-icons/fi';
+import { useSpring, animated } from 'react-spring';
 import './MainPage.css';
 
 interface ItemField {
@@ -419,9 +422,13 @@ const MainPage: React.FC = () => {
     }
   };
 
+  // **Animated Logo using React Spring**
+  const logoProps = useSpring({ opacity: 1, from: { opacity: 0 }, delay: 500 });
+
   return (
-    <div className="container">
-      <h1>Disbursement Form Generator</h1>
+    <Container>
+      <animated.img style={logoProps} src="/cus.png" alt="Logo" className="logo" />
+      <h1>Document Generator</h1>
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -570,7 +577,7 @@ const MainPage: React.FC = () => {
               onClick={() => removeItem(index)}
               className="remove-button"
             >
-              Remove Item
+              <FiMinus /> Remove Item
             </button>
           </motion.div>
         ))}
@@ -581,18 +588,24 @@ const MainPage: React.FC = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            Add Another Item
+            <FiPlus /> Add Another Item
           </motion.button>
         )}
         {/* **Receipts Upload** */}
         <div className="input-group">
           <label>Upload Receipts</label>
-          <input
-            type="file"
-            accept="image/*,application/pdf"
-            onChange={handleReceiptUpload}
-            multiple
-          />
+          <div className="file-upload">
+            <label htmlFor="receipt-upload" className="upload-label">
+              <FiUpload /> Choose Files
+            </label>
+            <input
+              id="receipt-upload"
+              type="file"
+              accept="image/*,application/pdf"
+              onChange={handleReceiptUpload}
+              multiple
+            />
+          </div>
           <div className="file-list">
             {receiptFiles.map((file, index) => (
               <div key={index} className="file-item">
@@ -610,12 +623,18 @@ const MainPage: React.FC = () => {
         {/* **Bank Statements Upload** */}
         <div className="input-group">
           <label>Upload Bank Statements</label>
-          <input
-            type="file"
-            accept="image/*,application/pdf"
-            onChange={handleBankStatementUpload}
-            multiple
-          />
+          <div className="file-upload">
+            <label htmlFor="bank-upload" className="upload-label">
+              <FiUpload /> Choose Files
+            </label>
+            <input
+              id="bank-upload"
+              type="file"
+              accept="image/*,application/pdf"
+              onChange={handleBankStatementUpload}
+              multiple
+            />
+          </div>
           <div className="file-list">
             {bankStatementFiles.map((file, index) => (
               <div key={index} className="file-item">
@@ -648,8 +667,16 @@ const MainPage: React.FC = () => {
           className="pdf-preview"
         ></iframe>
       )}
-    </div>
+    </Container>
   );
 };
+
+// **Styled Components**
+const Container = styled.div`
+  background-color: #4DBBEE;
+  min-height: 100vh;
+  padding: 20px;
+  position: relative;
+`;
 
 export default MainPage;
