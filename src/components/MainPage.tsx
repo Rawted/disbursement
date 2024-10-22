@@ -143,11 +143,12 @@ const MainPage: React.FC = () => {
       const maxHeight = rect[3] - 2; // Subtract padding
 
       // **Split text into lines if necessary**
-      const lines = splitTextIntoLines(value, font, fontSize, maxWidth);
+      let lines = splitTextIntoLines(value, font, fontSize, maxWidth);
 
       // **Adjust font size to fit width and height**
       while (
-        (lines.length * fontSize > maxHeight || font.widthOfTextAtSize(value, fontSize) > maxWidth) &&
+        (lines.length * fontSize > maxHeight ||
+          font.widthOfTextAtSize(value, fontSize) > maxWidth) &&
         fontSize > minFontSize
       ) {
         fontSize -= 0.5; // Decrease font size
