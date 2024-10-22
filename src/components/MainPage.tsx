@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import './MainPage.css';
+import Checkmark from './Checkmark'; // Assume you have a Checkmark component for animation
 
 interface ItemField {
   item: string;
@@ -20,6 +21,7 @@ const MainPage: React.FC = () => {
   const [date, setDate] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [confirmEmail, setConfirmEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [studentNumber, setStudentNumber] = useState('');
   const [accountCode, setAccountCode] = useState('');
@@ -37,6 +39,11 @@ const MainPage: React.FC = () => {
     }
   };
 
+  const removeItem = (index: number) => {
+    const newItems = items.filter((_, idx) => idx !== index);
+    setItems(newItems);
+  };
+
   const [pdfDataUrl, setPdfDataUrl] = useState<string>('');
 
   // **Receipts and Bank Statements**
@@ -45,19 +52,46 @@ const MainPage: React.FC = () => {
 
   const handleReceiptUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setReceiptFiles(Array.from(e.target.files));
+      setReceiptFiles([...receiptFiles, ...Array.from(e.target.files)]);
     }
   };
 
-  const handleBankStatementUpload = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleBankStatementUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setBankStatementFiles(Array.from(e.target.files));
+      setBankStatementFiles([...bankStatementFiles, ...Array.from(e.target.files)]);
     }
+  };
+
+  const removeReceiptFile = (index: number) => {
+    const newFiles = receiptFiles.filter((_, idx) => idx !== index);
+    setReceiptFiles(newFiles);
+  };
+
+  const removeBankStatementFile = (index: number) => {
+    const newFiles = bankStatementFiles.filter((_, idx) => idx !== index);
+    setBankStatementFiles(newFiles);
   };
 
   const generatePdf = async () => {
+    // **Validation**
+    if (
+      !date ||
+      !name ||
+      !email ||
+      !confirmEmail ||
+      !phoneNumber ||
+      !studentNumber ||
+      !accountCode
+    ) {
+      alert('Please fill out all required fields.');
+      return;
+    }
+
+    if (email !== confirmEmail) {
+      alert('Emails do not match.');
+      return;
+    }
+
     // **Fetch the existing PDF template**
     const existingPdfBytes = await fetch('/template.pdf').then((res) =>
       res.arrayBuffer()
@@ -77,12 +111,12 @@ const MainPage: React.FC = () => {
       { fieldName: 'Date', rectangle: [228.43, 112.33, 307.43, 19.04] },
       { fieldName: 'Name', rectangle: [228.43, 530.22, 308.38, 18.09] },
       { fieldName: 'Email', rectangle: [229.38, 551.87, 305.52, 18.09] },
+      { fieldName: 'ConfirmEmail', rectangle: [229, 571.67, 306.99, 18.86] },
       { fieldName: 'PhoneNumber', rectangle: [228.08, 592.45, 308.38, 17.13] },
       {
         fieldName: 'StudentNumber',
         rectangle: [229.73, 612.79, 307.43, 18.09],
       },
-      { fieldName: 'AccountCode', rectangle: [335.03, 163.73, 98.99, 24.75] },
       { fieldName: 'Total', rectangle: [433.06, 491.19, 100.89, 17.13] },
     ];
 
@@ -97,6 +131,10 @@ const MainPage: React.FC = () => {
         {
           fieldName: `Category${i}`,
           rectangle: getRectangleForField(`Category${i}`),
+        },
+        {
+          fieldName: `AccountCode${i}`,
+          rectangle: getRectangleForField(`AccountCode${i}`),
         }
       );
     }
@@ -114,9 +152,9 @@ const MainPage: React.FC = () => {
       Date: date,
       Name: name,
       Email: email,
+      ConfirmEmail: confirmEmail,
       PhoneNumber: phoneNumber,
       StudentNumber: studentNumber,
-      AccountCode: accountCode,
       Total: totalAmount,
     };
 
@@ -125,6 +163,7 @@ const MainPage: React.FC = () => {
       fieldValues[`Item${i}`] = items[i - 1].item;
       fieldValues[`Amount${i}`] = items[i - 1].amount;
       fieldValues[`Category${i}`] = items[i - 1].category;
+      fieldValues[`AccountCode${i}`] = accountCode;
     }
 
     // **Draw each field at its specified coordinates**
@@ -157,25 +196,25 @@ const MainPage: React.FC = () => {
       }
 
       // **Align Text**
-      const isCategoryOrAmount = ['Category', 'Amount'].some((key) =>
+      const isCategoryOrAmount = ['Category', 'Amount', 'Total'].some((key) =>
         field.fieldName.startsWith(key)
       );
       const isStaticField = [
         'Date',
         'Name',
         'Email',
+        'ConfirmEmail',
         'PhoneNumber',
         'StudentNumber',
-        'AccountCode',
-        'Total',
       ].includes(field.fieldName);
+      const isAccountCode = field.fieldName.startsWith('AccountCode');
 
       // **Draw each line**
       lines.forEach((line, index) => {
         let textWidth = font.widthOfTextAtSize(line, fontSize);
         let textX = x + 1; // Default left alignment with padding
 
-        if (isCategoryOrAmount) {
+        if (isCategoryOrAmount || isAccountCode) {
           // **Center alignment**
           textX = x + (rect[2] - textWidth) / 2;
         } else if (isStaticField) {
@@ -265,6 +304,19 @@ const MainPage: React.FC = () => {
       'Category9': [35.27, 401.95, 79.48, 25.8],
       'Category10': [35.27, 431.73, 77.49, 25.8],
       'Category11': [35.27, 461.5, 78.49, 25.8],
+
+      // **AccountCode fields**
+      'AccountCode1': [335.03, 163.73, 98.99, 24.75],
+      'AccountCode2': [336.30, 191.55, 94.38, 26.80],
+      'AccountCode3': [336.30, 221.32, 95.38, 27.79],
+      'AccountCode4': [336.30, 252.09, 94.38, 26.80],
+      'AccountCode5': [336.30, 281.86, 94.38, 27.79],
+      'AccountCode6': [337.30, 312.63, 93.39, 25.80],
+      'AccountCode7': [337.30, 341.41, 94.38, 26.80],
+      'AccountCode8': [336.30, 371.19, 94.38, 26.80],
+      'AccountCode9': [336.30, 400.96, 96.37, 27.79],
+      'AccountCode10': [337.30, 430.74, 93.39, 27.79],
+      'AccountCode11': [336.30, 460.51, 95.38, 27.79],
     };
 
     return rectangles[fieldName];
@@ -375,67 +427,84 @@ const MainPage: React.FC = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="form-container"
+        className="form-container neumorphism"
       >
         {/* **Non-repeating fields** */}
         <div className="input-group">
-          <label htmlFor="date">Date</label>
+          <label htmlFor="date">Date*</label>
           <input
             id="date"
             type="text"
             value={date}
             onChange={(e) => setDate(e.target.value)}
             className="text-input"
+            required
           />
         </div>
         <div className="input-group">
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name">Name*</label>
           <input
             id="name"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="text-input"
+            required
           />
         </div>
         <div className="input-group">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">Email*</label>
           <input
             id="email"
-            type="text"
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="text-input"
+            required
           />
         </div>
         <div className="input-group">
-          <label htmlFor="phoneNumber">Phone Number</label>
+          <label htmlFor="confirmEmail">Confirm Email*</label>
+          <input
+            id="confirmEmail"
+            type="email"
+            value={confirmEmail}
+            onChange={(e) => setConfirmEmail(e.target.value)}
+            className="text-input"
+            required
+          />
+        </div>
+        <div className="input-group">
+          <label htmlFor="phoneNumber">Phone Number*</label>
           <input
             id="phoneNumber"
             type="text"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
             className="text-input"
+            required
           />
         </div>
         <div className="input-group">
-          <label htmlFor="studentNumber">Student Number</label>
+          <label htmlFor="studentNumber">Student Number*</label>
           <input
             id="studentNumber"
             type="text"
             value={studentNumber}
             onChange={(e) => setStudentNumber(e.target.value)}
             className="text-input"
+            required
           />
         </div>
         <div className="input-group">
-          <label htmlFor="accountCode">Account Code</label>
+          <label htmlFor="accountCode">Account Code*</label>
           <input
             id="accountCode"
             type="text"
             value={accountCode}
             onChange={(e) => setAccountCode(e.target.value)}
             className="text-input"
+            required
           />
         </div>
 
@@ -443,7 +512,7 @@ const MainPage: React.FC = () => {
         {items.map((itemField, index) => (
           <motion.div
             key={index}
-            className="item-group"
+            className="item-group glassmorphism"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
@@ -498,6 +567,12 @@ const MainPage: React.FC = () => {
                 className="text-input"
               />
             </div>
+            <button
+              onClick={() => removeItem(index)}
+              className="remove-button"
+            >
+              Remove Item
+            </button>
           </motion.div>
         ))}
         {items.length < maxItems && (
@@ -519,6 +594,22 @@ const MainPage: React.FC = () => {
             onChange={handleReceiptUpload}
             multiple
           />
+          {receiptFiles.length > 0 && (
+            <Checkmark /> // Animated checkmark component
+          )}
+          <div className="file-list">
+            {receiptFiles.map((file, index) => (
+              <div key={index} className="file-item">
+                <span>{file.name}</span>
+                <button
+                  onClick={() => removeReceiptFile(index)}
+                  className="remove-file-button"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
         {/* **Bank Statements Upload** */}
         <div className="input-group">
@@ -529,10 +620,31 @@ const MainPage: React.FC = () => {
             onChange={handleBankStatementUpload}
             multiple
           />
+          {bankStatementFiles.length > 0 && (
+            <Checkmark /> // Animated checkmark component
+          )}
+          <div className="file-list">
+            {bankStatementFiles.map((file, index) => (
+              <div key={index} className="file-item">
+                <span>{file.name}</span>
+                <button
+                  onClick={() => removeBankStatementFile(index)}
+                  className="remove-file-button"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
-        <button onClick={generatePdf} className="generate-button">
+        <motion.button
+          onClick={generatePdf}
+          className="generate-button"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
           Generate PDF
-        </button>
+        </motion.button>
       </motion.div>
       {pdfDataUrl && (
         <iframe

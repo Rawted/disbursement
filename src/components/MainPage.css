@@ -1,58 +1,227 @@
 /* src/components/MainPage.css */
+
+/* General Styles */
 .container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
   text-align: center;
-  background-color: #e0f7fa;
-  min-height: 100vh;
-  padding: 20px;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
 }
 
+h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Form Container */
 .form-container {
-  display: inline-block;
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 500px;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
+/* Neumorphism Style */
+.neumorphism {
+  background: #e0e0e0;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 5px 5px 15px #bebebe,
+              -5px -5px 15px #ffffff;
+}
+
+/* Glassmorphism Style */
+.glassmorphism {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Input Groups */
 .input-group {
-  margin-bottom: 15px;
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
 .input-group label {
-  display: block;
-  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
 }
 
+/* Text Inputs */
 .text-input {
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-}
-
-.generate-button,
-.add-button {
-  padding: 10px 20px;
-  background-color: #29b6f6;
-  color: #fff;
+  padding: 15px;
+  font-size: 1rem;
   border: none;
-  margin-top: 10px;
+  border-radius: 15px;
+  outline: none;
+  background: #e0e0e0;
+  box-shadow: inset 5px 5px 10px #bebebe,
+              inset -5px -5px 10px #ffffff;
+  transition: all 0.2s ease-in-out;
+}
+
+.text-input:focus {
+  box-shadow: inset 3px 3px 6px #bebebe,
+              inset -3px -3px 6px #ffffff;
+}
+
+/* Buttons */
+.add-button,
+.remove-button,
+.generate-button,
+.remove-file-button {
+  padding: 15px 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 30px;
   cursor: pointer;
-  border-radius: 5px;
+  background: #e0e0e0;
+  box-shadow: 5px 5px 15px #bebebe,
+              -5px -5px 15px #ffffff;
+  transition: all 0.2s ease-in-out;
 }
 
+.add-button:hover,
+.remove-button:hover,
 .generate-button:hover,
-.add-button:hover {
-  background-color: #0288d1;
+.remove-file-button:hover {
+  background: #d8d8d8;
 }
 
-.item-group {
-  border-top: 1px solid #ccc;
-  padding-top: 10px;
+.add-button:active,
+.remove-button:active,
+.generate-button:active,
+.remove-file-button:active {
+  box-shadow: inset 5px 5px 10px #bebebe,
+              inset -5px -5px 10px #ffffff;
 }
 
+/* File List */
+.file-list {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #e0e0e0;
+  padding: 10px 15px;
+  border-radius: 15px;
+  box-shadow: 5px 5px 10px #bebebe,
+              -5px -5px 10px #ffffff;
+}
+
+.file-item span {
+  font-weight: bold;
+  color: #333;
+}
+
+.remove-file-button {
+  padding: 8px 15px;
+  font-size: 0.9rem;
+  border-radius: 20px;
+}
+
+/* PDF Preview */
 .pdf-preview {
   margin-top: 20px;
   border: none;
+  border-radius: 20px;
+  box-shadow: 5px 5px 15px #bebebe,
+              -5px -5px 15px #ffffff;
+}
+
+/* Checkmark Animation */
+.checkmark {
+  width: 24px;
+  height: 24px;
+  margin-left: 10px;
+  animation: checkmark 0.6s ease-in-out forwards;
+}
+
+@keyframes checkmark {
+  0% {
+    stroke-dashoffset: 50;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .text-input,
+  .add-button,
+  .remove-button,
+  .generate-button,
+  .remove-file-button {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+}
+
+/* Additional Styles */
+.item-group {
+  position: relative;
+}
+
+.remove-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+input[type="file"] {
+  opacity: 0;
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.input-group label[for="file-upload"] {
+  display: inline-block;
+  padding: 15px 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 30px;
+  background: #e0e0e0;
+  box-shadow: 5px 5px 15px #bebebe,
+              -5px -5px 15px #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.input-group label[for="file-upload"]:hover {
+  background: #d8d8d8;
+}
+
+.input-group label[for="file-upload"]:active {
+  box-shadow: inset 5px 5px 10px #bebebe,
+              inset -5px -5px 10px #ffffff;
 }
