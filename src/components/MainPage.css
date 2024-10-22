@@ -157,21 +157,32 @@ h3 {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  padding: 15px; /* Match padding with .item-group */
+  border: 1px solid #e9ecef; /* Match border with .item-group */
+  border-radius: 5px; /* Match border-radius with .item-group */
+  background: #f8f9fa; /* Same background color as .item-group */
+  position: relative; /* For the vignette effect */
+  /* Vignette effect */
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.05),
+    rgba(0, 0, 0, 0) 70%
+  ), #f8f9fa;
 }
 
 .file-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #fff;
-  padding: 8px 10px;
-  border-radius: 5px;
-  border-color: #ccc;
+  /* Remove individual background and border to let .file-list styling take effect */
+  background: transparent;
+  padding: 0;
+  border: none;
 }
 
 .file-item span {
   font-weight: bold;
-  color: #fff;
+  color: #ccc;
 }
 
 .remove-file-button {
@@ -179,6 +190,8 @@ h3 {
   font-size: 0.9rem;
   border-radius: 5px;
   background: #dc3545;
+  color: #fff; /* Ensure the button text is white */
+  border: none;
 }
 
 .remove-file-button:hover {
