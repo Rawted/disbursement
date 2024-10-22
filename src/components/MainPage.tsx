@@ -49,7 +49,7 @@ const MainPage: React.FC = () => {
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
     const pages = pdfDoc.getPages();
     const firstPage = pages[0];
-    const { height } = firstPage.getSize(); // Removed 'width' as it's unused
+    const { height } = firstPage.getSize();
 
     // **Embed a font**
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
@@ -102,13 +102,31 @@ const MainPage: React.FC = () => {
       const x = rect[0];
       const y = height - rect[1] - rect[3]; // rect[1] is top, rect[3] is height
 
+      // **Calculate font size to fit text within rectangle**
+      let fontSize = 12; // Starting font size
+      const maxFontSize = 12; // Maximum font size
+      const minFontSize = 6; // Minimum font size
+      const maxWidth = rect[2] - 4; // Subtract padding
+      const maxHeight = rect[3] - 4; // Subtract padding
+
+      let textWidth = font.widthOfTextAtSize(value, fontSize);
+      let textHeight = fontSize;
+
+      // **Adjust font size to fit width**
+      while ((textWidth > maxWidth || textHeight > maxHeight) && fontSize > minFontSize) {
+        fontSize -= 0.5; // Decrease font size
+        textWidth = font.widthOfTextAtSize(value, fontSize);
+        textHeight = fontSize;
+      }
+
+      // **Draw the text**
       firstPage.drawText(value, {
         x: x + 2, // Add padding
         y: y + 2, // Add padding
-        size: 12,
+        size: fontSize,
         font: font,
         color: rgb(0, 0, 0),
-        maxWidth: rect[2] - 4, // rect[2] is width
+        maxWidth: maxWidth,
       });
     }
 
