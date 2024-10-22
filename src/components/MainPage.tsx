@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import './MainPage.css';
-import Checkmark from './Checkmark'; // Assume you have a Checkmark component for animation
 
 interface ItemField {
   item: string;
@@ -427,14 +426,14 @@ const MainPage: React.FC = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="form-container neumorphism"
+        className="form-container"
       >
         {/* **Non-repeating fields** */}
         <div className="input-group">
-          <label htmlFor="date">Date*</label>
+          <label htmlFor="date">Date* (YYYY-MM-DD)</label>
           <input
             id="date"
-            type="text"
+            type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
             className="text-input"
@@ -512,7 +511,7 @@ const MainPage: React.FC = () => {
         {items.map((itemField, index) => (
           <motion.div
             key={index}
-            className="item-group glassmorphism"
+            className="item-group"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
@@ -594,9 +593,6 @@ const MainPage: React.FC = () => {
             onChange={handleReceiptUpload}
             multiple
           />
-          {receiptFiles.length > 0 && (
-            <Checkmark /> // Animated checkmark component
-          )}
           <div className="file-list">
             {receiptFiles.map((file, index) => (
               <div key={index} className="file-item">
@@ -620,9 +616,6 @@ const MainPage: React.FC = () => {
             onChange={handleBankStatementUpload}
             multiple
           />
-          {bankStatementFiles.length > 0 && (
-            <Checkmark /> // Animated checkmark component
-          )}
           <div className="file-list">
             {bankStatementFiles.map((file, index) => (
               <div key={index} className="file-item">

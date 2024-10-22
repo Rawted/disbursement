@@ -28,26 +28,6 @@ h3 {
   gap: 20px;
 }
 
-/* Neumorphism Style */
-.neumorphism {
-  background: #e0e0e0;
-  border-radius: 20px;
-  padding: 30px;
-  box-shadow: 5px 5px 15px #bebebe,
-              -5px -5px 15px #ffffff;
-}
-
-/* Glassmorphism Style */
-.glassmorphism {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  padding: 20px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
 /* Input Groups */
 .input-group {
   display: flex;
@@ -62,20 +42,16 @@ h3 {
 
 /* Text Inputs */
 .text-input {
-  padding: 15px;
+  padding: 10px;
   font-size: 1rem;
-  border: none;
-  border-radius: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
   outline: none;
-  background: #e0e0e0;
-  box-shadow: inset 5px 5px 10px #bebebe,
-              inset -5px -5px 10px #ffffff;
-  transition: all 0.2s ease-in-out;
+  transition: border-color 0.2s;
 }
 
 .text-input:focus {
-  box-shadow: inset 3px 3px 6px #bebebe,
-              inset -3px -3px 6px #ffffff;
+  border-color: #007BFF;
 }
 
 /* Buttons */
@@ -83,31 +59,22 @@ h3 {
 .remove-button,
 .generate-button,
 .remove-file-button {
-  padding: 15px 30px;
+  padding: 10px 20px;
   font-size: 1rem;
   font-weight: bold;
   border: none;
-  border-radius: 30px;
+  border-radius: 5px;
   cursor: pointer;
-  background: #e0e0e0;
-  box-shadow: 5px 5px 15px #bebebe,
-              -5px -5px 15px #ffffff;
-  transition: all 0.2s ease-in-out;
+  background: #007BFF;
+  color: #fff;
+  transition: background-color 0.2s;
 }
 
 .add-button:hover,
 .remove-button:hover,
 .generate-button:hover,
 .remove-file-button:hover {
-  background: #d8d8d8;
-}
-
-.add-button:active,
-.remove-button:active,
-.generate-button:active,
-.remove-file-button:active {
-  box-shadow: inset 5px 5px 10px #bebebe,
-              inset -5px -5px 10px #ffffff;
+  background: #0056b3;
 }
 
 /* File List */
@@ -115,55 +82,39 @@ h3 {
   margin-top: 10px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
 }
 
 .file-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #e0e0e0;
-  padding: 10px 15px;
-  border-radius: 15px;
-  box-shadow: 5px 5px 10px #bebebe,
-              -5px -5px 10px #ffffff;
+  background: #f8f9fa;
+  padding: 8px 10px;
+  border-radius: 5px;
 }
 
 .file-item span {
-  font-weight: bold;
+  font-weight: normal;
   color: #333;
 }
 
 .remove-file-button {
-  padding: 8px 15px;
+  padding: 5px 10px;
   font-size: 0.9rem;
-  border-radius: 20px;
+  border-radius: 5px;
+  background: #dc3545;
+}
+
+.remove-file-button:hover {
+  background: #c82333;
 }
 
 /* PDF Preview */
 .pdf-preview {
   margin-top: 20px;
-  border: none;
-  border-radius: 20px;
-  box-shadow: 5px 5px 15px #bebebe,
-              -5px -5px 15px #ffffff;
-}
-
-/* Checkmark Animation */
-.checkmark {
-  width: 24px;
-  height: 24px;
-  margin-left: 10px;
-  animation: checkmark 0.6s ease-in-out forwards;
-}
-
-@keyframes checkmark {
-  0% {
-    stroke-dashoffset: 50;
-  }
-  100% {
-    stroke-dashoffset: 0;
-  }
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 /* Responsive Design */
@@ -174,7 +125,7 @@ h3 {
   .generate-button,
   .remove-file-button {
     font-size: 0.9rem;
-    padding: 10px 20px;
+    padding: 8px 15px;
   }
 
   h1 {
@@ -189,39 +140,39 @@ h3 {
 /* Additional Styles */
 .item-group {
   position: relative;
+  padding: 15px;
+  border: 1px solid #e9ecef;
+  border-radius: 5px;
+  background: #f8f9fa;
 }
 
 .remove-button {
   position: absolute;
   top: 10px;
   right: 10px;
+  background: #dc3545;
+}
+
+.remove-button:hover {
+  background: #c82333;
 }
 
 input[type="file"] {
-  opacity: 0;
-  position: absolute;
-  width: 0;
-  height: 0;
+  display: block;
 }
 
 .input-group label[for="file-upload"] {
   display: inline-block;
-  padding: 15px 30px;
+  padding: 10px 20px;
   font-size: 1rem;
   font-weight: bold;
-  border-radius: 30px;
-  background: #e0e0e0;
-  box-shadow: 5px 5px 15px #bebebe,
-              -5px -5px 15px #ffffff;
+  border-radius: 5px;
+  background: #007BFF;
+  color: #fff;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: background-color 0.2s;
 }
 
 .input-group label[for="file-upload"]:hover {
-  background: #d8d8d8;
-}
-
-.input-group label[for="file-upload"]:active {
-  box-shadow: inset 5px 5px 10px #bebebe,
-              inset -5px -5px 10px #ffffff;
+  background: #0056b3;
 }
