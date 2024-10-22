@@ -166,12 +166,12 @@ h3 {
   background: #fff;
   padding: 8px 10px;
   border-radius: 5px;
+  border-color: #ccc;
 }
 
 .file-item span {
   font-weight: bold;
-  color: #333;
-  border: 1px solid #e9ecef;
+  color: #fff;
 }
 
 .remove-file-button {
