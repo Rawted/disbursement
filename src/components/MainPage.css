@@ -103,7 +103,21 @@ h3 {
 }
 
 /* Buttons */
-.add-button,
+.add-button {
+  adding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #28a745;
+  color: #fff;
+  transition: background-color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 15px;
+}
 .remove-button,
 .generate-button,
 .remove-file-button {
@@ -154,7 +168,7 @@ h3 {
       rgba(0, 0, 0, 0.05),
       rgba(0, 0, 0, 0) 70%
     ),
-    #f8f9fa;
+    #fff;
   position: relative;
   animation: fadeIn 0.5s ease-in-out;
 }
@@ -183,8 +197,8 @@ h3 {
 }
 
 .file-item span {
-  font-weight: normal;
-  color: #000; /* Set text color to black */
+  font-weight: bold;
+  color: #fff; /* Set text color to white */
 }
 
 /* Remove File Button */
