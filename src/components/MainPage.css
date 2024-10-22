@@ -104,7 +104,9 @@ h3 {
 }
 
 /* Buttons */
-.add-button,
+.add-button {
+  margin-bottom: 15px;
+}
 .remove-button,
 .generate-button,
 .remove-file-button {
