@@ -104,7 +104,6 @@ const MainPage: React.FC = () => {
 
       // **Calculate font size to fit text within rectangle**
       let fontSize = 12; // Starting font size
-      const maxFontSize = 12; // Maximum font size
       const minFontSize = 6; // Minimum font size
       const maxWidth = rect[2] - 4; // Subtract padding
       const maxHeight = rect[3] - 4; // Subtract padding
@@ -112,7 +111,7 @@ const MainPage: React.FC = () => {
       let textWidth = font.widthOfTextAtSize(value, fontSize);
       let textHeight = fontSize;
 
-      // **Adjust font size to fit width**
+      // **Adjust font size to fit width and height**
       while ((textWidth > maxWidth || textHeight > maxHeight) && fontSize > minFontSize) {
         fontSize -= 0.5; // Decrease font size
         textWidth = font.widthOfTextAtSize(value, fontSize);
