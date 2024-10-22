@@ -421,7 +421,7 @@ const MainPage: React.FC = () => {
 
   return (
     <div className="container">
-      <h1>Document Generator</h1>
+      <h1>Disbursement Form Generator</h1>
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
