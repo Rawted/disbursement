@@ -55,9 +55,11 @@ h3 {
   gap: 5px;
 }
 
-.input-group label {
+.input-group > label:not(.upload-label),
+.input-group > input,
+.input-group > select {
+  color: #000;
   font-weight: bold;
-  color: #333;
 }
 
 .input-group .file-upload {
