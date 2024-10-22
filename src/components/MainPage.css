@@ -103,21 +103,7 @@ h3 {
 }
 
 /* Buttons */
-.add-button {
-  adding: 10px 20px;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  background: #28a745;
-  color: #fff;
-  transition: background-color 0.2s;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  margin-bottom: 15px;
-}
+.add-button,
 .remove-button,
 .generate-button,
 .remove-file-button {
@@ -133,6 +119,10 @@ h3 {
   display: inline-flex;
   align-items: center;
   gap: 5px;
+}
+
+.add-button {
+  margin-bottom: 15px;
 }
 
 .add-button:hover,
@@ -198,7 +188,7 @@ h3 {
 
 .file-item span {
   font-weight: bold;
-  color: #fff; /* Set text color to white */
+  color: #333; /* Set text color to grey */
 }
 
 /* Remove File Button */
