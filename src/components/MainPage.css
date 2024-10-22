@@ -97,6 +97,7 @@ h3 {
 
 .text-input:focus {
   border-color: #007BFF;
+  color: #fff;
 }
 
 /* Buttons */
@@ -152,7 +153,7 @@ h3 {
 
 .file-item span {
   font-weight: normal;
-  color: #333;
+  color: #fff;
 }
 
 .remove-file-button {
