@@ -546,7 +546,10 @@ const MainPage: React.FC = () => {
               </select>
             </div>
             <div className="input-group">
-              <label htmlFor={`Item${index}`}>Line Item - (Must Match Your Budget Sheet Exactly)</label>
+              <label htmlFor={`Item${index}`}>
+  Line Item {' '}
+  <span style={{ fontWeight: 'normal' }}>- (Must Match Your Budget Sheet Exactly)</span>
+</label>
               <input
                 id={`Item${index}`}
                 type="text"
