@@ -548,7 +548,7 @@ const MainPage: React.FC = () => {
             <div className="input-group">
               <label htmlFor={`item${index}`}>Item</label>
               <input
-                id={`item${index}`}
+                id={`Line Item (Must be the exact same as in your budget sheet)${index}`}
                 type="text"
                 value={itemField.item}
                 onChange={(e) => {
